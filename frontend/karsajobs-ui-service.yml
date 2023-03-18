@@ -1,0 +1,24 @@
+# versi api k8s
+apiVersion: v1
+# tipe kubernets object
+kind: Service
+# sekumpulan data yang memberikan informasi tentang data lain
+metadata:
+  # nama service
+  name: frontend
+  # label tambahan yang bisa dipakai selector
+  labels:
+    app: microservices
+# spesifikasi object
+spec:
+  # tipe service
+  type: NodePort
+  # spesifikasi port
+  ports:
+    # mengekspos port kontainer
+  - port: 8000
+    # node port pada host
+    nodePort: 30020
+  # selector akan memilih pod dengan label yang sesuai
+  selector:
+    tier: frontend

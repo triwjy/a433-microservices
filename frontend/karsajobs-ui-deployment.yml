@@ -1,0 +1,44 @@
+# versi api k8s
+apiVersion: apps/v1
+# tipe kubernets object
+kind: Deployment
+# sekumpulan data yang memberikan informasi tentang data lain
+metadata:
+  # nama deployment
+  name: karsajobs-ui
+  # label tambahan yang bisa dipakai selector
+  labels:
+    app: microservices
+    tier: frontend
+# spesifikasi object
+spec:
+  # jumlah replica pod yang diinginkan
+  replicas: 1
+  # selector akan memilih template dengan label yang sesuai
+  selector:
+    matchLabels:
+      tier: frontend
+  # bagian template
+  template:
+    # metadata template yang bisa dipakai selector
+    metadata:
+      labels:
+        app: microservices
+        tier: frontend
+    # spesifikasi template
+    spec:
+      # memuat spesifikasi kontainer
+      containers:
+        # nama kontainer
+      - name: server
+        # image kontainer
+        image: ghcr.io/triwjy/karsajobs-ui:latest
+        # port kontainer
+        ports:
+          - containerPort: 8000
+        # environment variable kontainer, sebagai substitusi .env
+        env:
+            # nama env variable
+          - name: VUE_APP_BACKEND 
+            # node ip dan node port backend sesuai pada komputer
+            value: http://172.30.71.102:30010

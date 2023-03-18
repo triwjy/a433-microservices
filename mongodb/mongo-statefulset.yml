@@ -1,0 +1,86 @@
+# versi api k8s
+apiVersion: apps/v1
+# tipe kubernets object
+kind: StatefulSet
+# sekumpulan data yang memberikan informasi tentang data lain
+metadata:
+  # nama statefulset
+  name: mongo
+  # label tambahan yang bisa dipakai selector
+  labels:
+    app: mongo
+# spesifikasi object
+spec:
+  # selector akan memilih template dengan label yang sesuai
+  selector:
+    matchLabels:
+      app: mongo
+      tier: data
+  # service yang akan dipakai
+  serviceName: mongo
+  # jumlah replica pod yang diinginkan
+  replicas: 1
+  # menunggu 10s sebelum status ready
+  minReadySeconds: 10
+  # bagian template
+  template:
+    # metadata template yang bisa dipakai selector
+    metadata:
+      # label tambahan yang bisa dipakai selector
+      labels:
+        app: mongo
+        tier: data
+    # spesifikasi template
+    spec:
+      # menunggu 10s setelah mengirim termination signal
+      terminationGracePeriodSeconds: 10
+      # memuat spesifikasi kontainer
+      containers:
+        # image kontainer
+      - image: mongo
+        # nama kontainer
+        name: mongo
+        # environment variable kontainer
+        env:
+          # nama env variable
+        - name: MONGO_INITDB_ROOT_USERNAME_FILE
+          # nilai env variable
+          value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+          # nama env variable
+        - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+          # nilai env variable
+          value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+        # port kontainer
+        ports:
+        - containerPort: 27017
+          # nama port
+          name: mongo
+        volumeMounts:
+          # mount pv
+        - name: mongo-persistent-storage
+          mountPath: /data/db
+          # mount configMap
+        - name: mongo-config
+          mountPath: /config
+          # mount secret
+        - name: mongo-secret
+          mountPath: /etc/mongo-credentials
+      # memuat spesifikasi kontainer
+      volumes:
+        # nama volume
+      - name: mongo-persistent-storage
+        # nama pvc yang dipakai
+        persistentVolumeClaim:
+          claimName: mongo-pv-claim
+        # nama volume
+      - name: mongo-config
+        # volume tipe configMap
+        configMap:
+          # nama configmap yang dipakai
+          name: mongo-config
+        # nama volume
+      - name: mongo-secret
+        # volume tipe secret
+        secret:
+          # nama secret yang dipakai
+          secretName: mongo-secret

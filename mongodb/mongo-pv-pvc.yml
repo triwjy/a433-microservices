@@ -1,0 +1,44 @@
+# versi api k8s
+apiVersion: v1
+# tipe kubernets object
+kind: PersistentVolume
+# sekumpulan data yang memberikan informasi tentang data lain
+metadata:
+  # nama pv
+  name: mongo-pv-volume
+  # label tambahan
+  labels:
+    type: local
+# spesifikasi object
+spec:
+  # tipe storage class
+  storageClassName: manual
+  # ukuran penyimpanan
+  capacity:
+    storage: 20Mi
+  # tipe access mode
+  accessModes:
+    - ReadWriteOnce
+  # direktori penyimpanan
+  hostPath:
+    path: "/mnt/data"
+---
+# versi api k8s
+apiVersion: v1
+# tipe kubernets object
+kind: PersistentVolumeClaim
+# sekumpulan data yang memberikan informasi tentang data lain
+metadata:
+  # nama pvc
+  name: mongo-pv-claim
+# spesifikasi object
+spec:
+  # tipe storage class
+  storageClassName: manual
+  # tipe access mode
+  accessModes:
+    - ReadWriteOnce
+  # spesifikasi resource penyimpanan 
+  resources:
+    requests:
+      storage: 20Mi

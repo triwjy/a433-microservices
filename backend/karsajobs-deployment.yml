@@ -1,0 +1,67 @@
+# versi api k8s
+apiVersion: apps/v1
+# tipe kubernets object
+kind: Deployment
+# sekumpulan data yang memberikan informasi tentang data lain
+metadata:
+  # nama deployment
+  name: karsajobs
+  # label tambahan yang bisa dipakai selector
+  labels:
+    app: microservices
+    tier: backend
+# spesifikasi object
+spec:
+  # jumlah replica pod yang diinginkan
+  replicas: 1
+  # selector akan memilih template dengan label yang sesuai
+  selector:
+    matchLabels:
+      tier: backend
+  # bagian template
+  template:
+    # metadata template yang bisa dipakai selector
+    metadata:
+      # label tambahan yang bisa dipakai selector
+      labels:
+        app: microservices
+        tier: backend
+    # spesifikasi template
+    spec:
+      # memuat spesifikasi kontainer
+      containers:
+        # nama kontainer
+      - name: server
+        # image kontainer
+        image: ghcr.io/triwjy/karsajobs:latest
+        # port kontainer
+        ports:
+          - containerPort: 8080
+        # environment variable kontainer
+        env:
+            # nama env variable
+          - name: APP_PORT
+            # nilai env variable
+            value: "8080"
+            # nama env variable
+          - name: MONGO_HOST
+            # nilai env variable
+            value: mongo
+            # nama env variable
+          - name: MONGO_USER
+            # nilai env variable berasal dari secret
+            valueFrom:
+              secretKeyRef:
+                # nama secret
+                name: mongo-secret
+                # key referensi secret
+                key: MONGO_ROOT_USERNAME
+            # nama env variable
+          - name: MONGO_PASS
+            # nilai env variable berasal dari secret
+            valueFrom:
+              secretKeyRef:
+                # nama secret
+                name: mongo-secret
+                # key referensi secret
+                key: MONGO_ROOT_PASSWORD

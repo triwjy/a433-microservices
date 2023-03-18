@@ -1,0 +1,26 @@
+# versi api k8s
+apiVersion: v1
+# tipe kubernets object
+kind: Service
+# sekumpulan data yang memberikan informasi tentang data lain
+metadata:
+  # nama service
+  name: karsajobs
+  # label tambahan yang bisa dipakai selector
+  labels:
+    app: microservices
+# spesifikasi object
+spec:
+  # tipe service
+  type: NodePort
+  # spesifikasi port
+  ports:
+    # mengekspos port kontainer
+  - port: 8080
+    # node port pada host
+    nodePort: 30010
+    # nama port
+    name: karsajobs
+  # selector akan memilih pod dengan label yang sesuai
+  selector:
+    tier: backend
