@@ -1,0 +1,18 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@2.2.0
+  go: circleci/go@1.7.2
+workflows:
+  lint-dockerfile:
+    jobs:
+      - docker/hadolint:
+          executor-class: medium
+          hadolint-tag: 2.2.0-debian
+          ignore-rules: 'DL4005,DL4005,DL3008'
+  build-app-karsajobs:
+    jobs:
+      - docker/publish:
+          context: 
+            - ghcr
+          image: triwjy/karsajobs-ui
+          registry: ghcr.io
