@@ -11,9 +11,14 @@ workflows:
           ignore-rules: 'DL4005,DL4005,DL3008'
   test-app:
     jobs:
-      - build
+      - build-and-test
+  build-app-karsajobs:
+    jobs:
+      - docker/publish:
+          image: triwjy/karsajobs
+          registry: ghcr.io
 jobs:
-  build:
+  build-and-test:
     executor:
       name: go/default
       tag: '1.16'
