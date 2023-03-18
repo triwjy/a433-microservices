@@ -8,4 +8,3 @@ workflows:
           executor-class: medium
           hadolint-tag: 2.2.0-debian
           ignore-rules: 'DL4005,DL4005,DL3008'
-          trusted-registries: 'ghcr.io'
