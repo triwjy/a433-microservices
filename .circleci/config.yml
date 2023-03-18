@@ -22,4 +22,6 @@ jobs:
       - go/load-cache
       - go/mod-download
       - go/save-cache
-      - go/test
+      - run:
+          name: Test
+          command: go test -v -short --count=1 $(go list ./...)
