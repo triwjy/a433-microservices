@@ -5,7 +5,6 @@ workflows:
   lint:
     jobs:
       - docker/hadolint:
-          dockerfiles: .
           executor-class: medium
           hadolint-tag: 2.2.0-debian
           ignore-rules: 'DL4005,DL4005,DL3008'
